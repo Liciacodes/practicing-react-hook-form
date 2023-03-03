@@ -9,9 +9,8 @@ function App() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      age: "",
+      email: "",
+      password: "",
     },
   });
   const onSubmit = (data) => console.log(data);
@@ -22,30 +21,37 @@ function App() {
       <div className="form-div">
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
-            {...register("firstName", {
-              required: "This is required",
-              minLength: {
-                value: 4,
-                message: "Min Length is 4",
+            {...register("email", {
+              required: {
+                value: true,
+                message: "This is required",
+              },
+
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
+                message: "This is not a valid email format!",
               },
             })}
-            placeholder="First Name"
+            placeholder="Email"
           />
 
-          <p>{errors.firstName?.message}</p>
+          <p>{errors.email?.message}</p>
           <input
-            {...register("lastName", {
-              required: "This is required",
+            {...register("password", {
+              required: "Password is required",
               minLength: {
                 value: 4,
-                message: "Min Length is 4",
+                message: "Password cannot be less than 4 characters",
+              },
+              maxLength: {
+                value: 10,
+                message: "Password should not exceed 10 characters",
               },
             })}
-            placeholder="Last Name"
+            placeholder="Password"
           />
 
-          <input type="number" {...register("age", { valueAsNumber: true })} />
-          <p>{errors.lastName?.message}</p>
+          <p>{errors.password?.message}</p>
           <input type="submit" className="submit" />
         </form>
       </div>
